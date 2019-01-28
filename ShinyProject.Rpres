@@ -48,7 +48,7 @@ trainset <- titanic[trainindex, ]
 test <- titanic[-trainindex, ]
 ```
 
-Hos the Model is trained
+How the Model is trained
 ========================================================
 ```{r}
 library(rattle)
