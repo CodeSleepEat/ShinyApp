@@ -1,0 +1,74 @@
+ShinyProject
+========================================================
+author: Maier
+date: 28.01.2019
+autosize: true
+
+
+Get Predictions based on a Decision Tree
+========================================================
+
+Documentation:
+
+This Web application loads the required packages and the Titanic data set. 
+A decision tree is then trained which predicts whether a person will survive 
+the Titanic accident or not based on the attributes class, gender and age. 
+The decision tree and accuracy are displayed. 0 means the person has not survived, 
+1 means the person has survived.
+
+The user then has the opportunity to make entries for the attributes class, 
+gender and age. After a click on the Submit button, the prediction for the 
+corresponding entries is displayed.
+    
+
+How the data is imported and cleaned
+========================================================
+
+
+```r
+titanic_train <- read.csv("./Data/titanic_train.csv")
+titanic_train <- titanic_train[, c("Survived", "Pclass", "Sex", "Age")]
+names(titanic_train) <- c("Survived", "Class", "Sex", "Age")
+titanic_train$Survived <- as.factor(titanic_train$Survived)
+titanic_train$Class <- as.factor(titanic_train$Class)
+titanic_train$Sex <- as.factor(titanic_train$Sex)
+titanic_train <- na.omit(titanic_train)
+head(titanic_train)
+```
+
+```
+  Survived Class    Sex Age
+1        0     3   male  22
+2        1     1 female  38
+3        1     3 female  26
+4        1     1 female  35
+5        0     3   male  35
+7        0     1   male  54
+```
+
+```r
+titanic <- titanic_train
+```
+
+How the test and train data sets are generated
+========================================================
+
+
+```r
+library(caret)
+set.seed(5555555)
+trainindex <- createDataPartition(titanic$Survived, p=0.7, list=F)
+trainset <- titanic[trainindex, ]
+test <- titanic[-trainindex, ]
+```
+
+Hos the Model is trained
+========================================================
+
+```r
+library(rattle)
+model1 <- train(Survived ~ ., trainset, method="rpart")
+fancyRpartPlot(model1$finalModel)
+```
+
+![plot of chunk unnamed-chunk-3](ShinyProject-figure/unnamed-chunk-3-1.png)
